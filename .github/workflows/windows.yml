@@ -1,0 +1,20 @@
+name: Windows build
+
+on:
+  workflow_call:
+
+jobs:
+  windows_build:
+    runs-on: windows-2022
+    name: Build Windows package
+    steps:
+      - name: Configure environment and install Conan release
+      run: |
+        apt-get update && apt-get install -y python3 python3-pip
+        python3 -m pip install conan
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: build package
+        run: conan create .
