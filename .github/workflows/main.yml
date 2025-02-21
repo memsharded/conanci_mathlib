@@ -6,18 +6,13 @@ on:
   pull_request:
     branches:
       - 'main'
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   linux_suite:
     uses: ./.github/workflows/linux.yml
-    name: Linux test suite
+    name: Linux
 
   windows_suite:
     uses: ./.github/workflows/windows.yml
-    name: Windows test suite
+    name: Windows 
   
