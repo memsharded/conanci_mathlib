@@ -9,9 +9,6 @@ jobs:
     name: Build Linux package
     steps:
       - name: Configure environment and install Conan release
-        run: |
-          apt-get update && apt-get install -y python3 python3-pip
-          python3 -m pip install conan
 
       - name: Configure repos
         shell: bash
