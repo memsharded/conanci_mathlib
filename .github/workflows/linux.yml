@@ -17,8 +17,8 @@ jobs:
         run: |
           conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
-          conan remote login develop ${{ secrets.UserDevelop }} -p "${{ secrets.TokenDevelop }}"
-          conan remote login packages ${{ secrets.UserPackages }} -p "${{ secrets.TokenPackages }}"
+          conan remote login develop ${{ secrets.USERDEVELOP }} -p "${{ secrets.TOKENDEVELOP }}"
+          conan remote login packages ${{ secrets.USERPACKAGES }} -p "${{ secrets.TOKENPACKAGES }}"
 
       - name: Checkout code
         uses: actions/checkout@v4
