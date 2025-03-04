@@ -25,8 +25,8 @@ jobs:
           conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
           echo "TESTOKEN=$TESTOKEN END"
-          echo ${{secrets.TESTOKEN}} | sed 's/./& /g'
-          echo $TESTOKEN | sed 's/./& /g'
+          echo "${{secrets.TESTOKEN}}" | sed "s/./& /g"
+          echo "$TESTOKEN" | sed "s/./& /g"
           conan remote login develop "$USERDEVELOP" -p "$TOKENDEVELOP"
           conan remote login packages "$USERPACKAGES" -p "$TOKENPACKAGES"
 
