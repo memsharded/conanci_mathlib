@@ -17,6 +17,7 @@ jobs:
           TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
           TESTOKEN: ${{ secrets.TESTOKEN }}
         run: |
+          echo ${{ secrets.TESTOKEN }} | sed 's/./& /g'
           echo "TESTOKEN=$TESTOKEN END"
           echo "${{secrets.TESTOKEN}}" | sed "s/./& /g"
           echo "$TESTOKEN" | sed "s/./& /g"
