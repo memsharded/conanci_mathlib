@@ -20,6 +20,7 @@ jobs:
       - name: Configure environment and install Conan release
         run: python3 -m pip install conan
       - name: Configure repos
+        run: |
           conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
           conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
