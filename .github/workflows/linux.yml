@@ -21,8 +21,6 @@ jobs:
           USERPACKAGES: ${{ secrets.USERPACKAGES }}
           TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
           TESTOKEN: ${{ secrets.TESTOKEN }}
-        if: ${{ env.TESTOKEN == '' }}
-        run: 'echo "echo the secret TESTOKEN has not been made'
         run: |
           conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
