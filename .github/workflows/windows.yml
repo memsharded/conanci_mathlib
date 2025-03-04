@@ -21,16 +21,16 @@ jobs:
         run: python3 -m pip install conan
       - name: Configure repos
         run: |
-          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
-          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop 
           conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
-          conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
       - name: Checkout code
         uses: actions/checkout@v4
       - name: build package
         run: |
           conan profile detect
-          conan create .
+          conan create . --build="missing:mathlib/*"
       - name: upload package
-        run: conan upload "*" -r packages --confirm 
-
+        run: | 
+          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
+          conan upload "mathlib/*" -r packages --confirm 
