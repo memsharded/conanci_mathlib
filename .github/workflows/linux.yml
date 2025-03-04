@@ -17,21 +17,6 @@ jobs:
           TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
           TESTOKEN: ${{ secrets.TESTOKEN }}
         run: |
-          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
-          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
           echo "TESTOKEN=$TESTOKEN END"
           echo "${{secrets.TESTOKEN}}" | sed "s/./& /g"
           echo "$TESTOKEN" | sed "s/./& /g"
-          conan remote login develop "$USERDEVELOP" -p "$TOKENDEVELOP"
-          conan remote login packages "$USERPACKAGES" -p "$TOKENPACKAGES"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: build package
-        run: |
-          conan profile detect
-          conan create .
-
-      - name: upload package
-        run: conan upload "*" -r packages --confirm
