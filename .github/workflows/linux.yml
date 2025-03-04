@@ -20,9 +20,11 @@ jobs:
           TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
           USERPACKAGES: ${{ secrets.USERPACKAGES }}
           TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
+          TESTTOKEN: ${{ secrets.TESTTOKEN }}
         run: |
           conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          echo "$TESTTOKEN"
           conan remote login develop "$USERDEVELOP" -p "$TOKENDEVELOP"
           conan remote login packages "$USERPACKAGES" -p "$TOKENPACKAGES"
 
