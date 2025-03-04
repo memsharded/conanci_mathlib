@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-24.04
     name: Build Linux package
     steps:
-      - name: Configure environment and install Conan release
-
       - name: Configure repos
         shell: bash
         env:
