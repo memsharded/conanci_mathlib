@@ -11,4 +11,7 @@ jobs:
   linux_suite:
     uses: ./.github/workflows/linux.yml
     name: Linux
-  
+
+  windows_suite:
+    uses: ./.github/workflows/windows.yml
+    name: Windows

@@ -2,6 +2,15 @@ name: Windows build
 
 on:
   workflow_call:
+    secrets:
+      USERDEVELOP:
+        required: true
+      TOKENDEVELOP:
+        required: true
+      USERPACKAGES:
+        required: true
+      TOKENPACKAGES:
+        required: true
 
 jobs:
   windows_build:
@@ -10,11 +19,17 @@ jobs:
     steps:
       - name: Configure environment and install Conan release
         run: python3 -m pip install conan
-
+      - name: Configure repos
+          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
+          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
+          conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: build package
         run: |
           conan profile detect
           conan create .
+      - name: upload package
+        run: conan upload "*" -r packages --confirm 
+

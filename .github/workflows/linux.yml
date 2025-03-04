@@ -2,27 +2,35 @@ name: Linux build
 
 on:
   workflow_call:
+    secrets:
+        USERDEVELOP:
+          required: true
+        TOKENDEVELOP:
+          required: true
+        USERPACKAGES:
+          required: true
+        TOKENPACKAGES:
+          required: true
 
 jobs:
   linux_build:
     runs-on: ubuntu-24.04
     name: Build Linux package
     steps:
-      - shell: bash
-        env:
-          SUPER_SECRET: ${{ secrets.SuperSecret }}
+      - name: Configure environment and install Conan release
         run: |
-          echo "$SUPER_SECRET" | sed "s/./& /g"
+          apt-get update && apt-get install -y python3 python3-pip
+          python3 -m pip install conan
       - name: Configure repos
-        shell: bash
-        env:
-          USERDEVELOP: ${{ secrets.USERDEVELOP }}
-          TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
-          USERPACKAGES: ${{ secrets.USERPACKAGES }}
-          TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
-          TESTOKEN: ${{ secrets.TESTOKEN }}
+          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
+          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
+          conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: build package
         run: |
-          echo ${{ secrets.TESTOKEN }} | sed 's/./& /g'
-          echo "TESTOKEN=$TESTOKEN END"
-          echo "${{ secrets.TESTOKEN }}" | sed "s/./& /g"
-          echo "$TESTOKEN" | sed "s/./& /g"
+          conan profile detect
+          conan create .
+      - name: upload package
+        run: conan upload "*" -r packages --confirm 
