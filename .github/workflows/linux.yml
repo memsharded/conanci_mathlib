@@ -13,6 +13,13 @@ jobs:
           apt-get update && apt-get install -y python3 python3-pip
           python3 -m pip install conan
 
+      - name: Configure repos
+        run: |
+          conan remote add develop https://conandev.jfrog.io/artifactory/api/conan/citutorial-develop
+          conan remore add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan remote login develop ${{ secrets.UserDevelop }} -p "${{ secrets.TokenDevelop }}"
+          conan remote login packages ${{ secrets.UserPackages }} -p "${{ secrets.TokenPackages }}"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -20,3 +27,6 @@ jobs:
         run: |
           conan profile detect
           conan create .
+
+      - name: upload package
+        run: conan upload "*" -r packages --confirm
