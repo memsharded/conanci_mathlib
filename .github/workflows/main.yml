@@ -11,7 +11,17 @@ jobs:
   linux_suite:
     uses: ./.github/workflows/linux.yml
     name: Linux
+    secrets:
+      USERDEVELOP: ${{ secrets.USERDEVELOP }}
+      TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
+      USERPACKAGES: ${{ secrets.USERPACKAGES }}
+      TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
 
   windows_suite:
     uses: ./.github/workflows/windows.yml
     name: Windows
+    secrets:
+      USERDEVELOP: ${{ secrets.USERDEVELOP }}
+      TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
+      USERPACKAGES: ${{ secrets.USERPACKAGES }}
+      TOKENPACKAGES: ${{ secrets.TOKENPACKAGES }}
