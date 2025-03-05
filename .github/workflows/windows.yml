@@ -20,6 +20,7 @@ jobs:
       - name: Download conan.lock
         uses: actions/download-artifact@v4
         with:
+          path: .
           name: conan.lock
       - name: Configure environment and install Conan release
         run: python3 -m pip install conan
