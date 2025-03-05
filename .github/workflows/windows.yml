@@ -26,7 +26,7 @@ jobs:
       - name: Configure repos
         run: |
           conan profile detect
-          conan config install https://github.com/memsharded/conanci_conf
+          conan config install https://github.com/memsharded/conanci_conf.git
           conan remote enable develop
           conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
       - name: Checkout code
