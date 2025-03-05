@@ -28,9 +28,15 @@ jobs:
       - name: build package
         run: |
           conan profile detect
-          conan create . --build="missing:mathlib/*"
+          conan create . --build="missing:mathlib/*" --format=json > graph.json
       - name: upload package
         run: | 
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
           conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
-          conan upload "mathlib/*" -r packages --confirm 
+          conan list --graph=graph.json --graph-binaries=build --format=json > built.json
+          conan upload -l=built.json -r=packages -c --format=json > uploaded_release.json
+      - name: 'Upload pkglist'
+        uses: actions/upload-artifact@v4
+        with:
+          name: uploaded_windows.json
+          path: uploaded_windows.json
