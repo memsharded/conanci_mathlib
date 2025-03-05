@@ -8,9 +8,27 @@ on:
       - 'main'
 
 jobs:
+  lock:
+    name: Create lockfiles
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Create lockfile
+        run: |
+          apt-get update && apt-get install -y python3 python3-pip
+          python3 -m pip install conan
+          conan config install https://github.com/memsharded/conanci_conf
+          conan lock create . -pr=windows --lockfile-out=conan.lock
+          conan lock create . -pr=linux  --lockfile=conan.lock --lockfile-out=conan.lock
+      - name: Upload lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: conan.lock
+          path: conan.lock
+
   linux:
     uses: ./.github/workflows/linux.yml
     name: Linux
+    needs: [lock]
     secrets:
       USERDEVELOP: ${{ secrets.USERDEVELOP }}
       TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
@@ -20,6 +38,7 @@ jobs:
   windows:
     uses: ./.github/workflows/windows.yml
     name: Windows
+    needs: [lock]
     secrets:
       USERDEVELOP: ${{ secrets.USERDEVELOP }}
       TOKENDEVELOP: ${{ secrets.TOKENDEVELOP }}
