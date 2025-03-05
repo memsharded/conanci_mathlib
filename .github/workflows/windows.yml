@@ -17,11 +17,6 @@ jobs:
     runs-on: windows-2022
     name: Build Windows package
     steps:
-      - name: Download conan.lock
-        uses: actions/download-artifact@v4
-        with:
-          path: .
-          name: conan.lock
       - name: Configure environment and install Conan release
         run: python3 -m pip install conan
       - name: Configure repos
@@ -32,6 +27,10 @@ jobs:
           conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Download conan.lock
+        uses: actions/download-artifact@v4
+        with:
+          name: conan.lock
       - name: build package
         run: |
           conan create . --build="missing:mathlib/*" -pr=windows --lockfile=conan.lock --format=json > graph.json
