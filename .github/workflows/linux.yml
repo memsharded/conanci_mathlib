@@ -3,14 +3,14 @@ name: Linux build
 on:
   workflow_call:
     secrets:
-        USERDEVELOP:
-          required: true
-        TOKENDEVELOP:
-          required: true
-        USERPACKAGES:
-          required: true
-        TOKENPACKAGES:
-          required: true
+      USERDEVELOP:
+        required: true
+      TOKENDEVELOP:
+        required: true
+      USERPACKAGES:
+        required: true
+      TOKENPACKAGES:
+        required: true
 
 jobs:
   linux_build:
@@ -32,6 +32,7 @@ jobs:
           conan profile detect
           conan create . --build="missing:mathlib/*" --format=json > graph.json
       - name: upload package
+        shell: cmd
         run: | 
           conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
           conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
