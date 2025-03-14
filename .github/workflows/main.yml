@@ -22,6 +22,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Create lockfile
         run: |
+          conan remote enable develop
+          conan remote login develop "${{ secrets.USERDEVELOP }}" -p "${{ secrets.TOKENDEVELOP }}"
           conan lock create . -pr=windows --lockfile-out=conan.lock
           conan lock create . -pr=linux  --lockfile=conan.lock --lockfile-out=conan.lock
       - name: Upload lockfile
