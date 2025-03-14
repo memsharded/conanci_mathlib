@@ -58,9 +58,9 @@ jobs:
         run: |
           apt-get update && apt-get install -y python3 python3-pip
           python3 -m pip install conan
+          conan config install https://github.com/memsharded/conanci_conf.git
       - name: Configure repos
         run: |
-          conan config install https://github.com/memsharded/conanci_conf.git
           conan remote enable packages
           conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
           conan remote enable products
