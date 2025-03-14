@@ -60,9 +60,10 @@ jobs:
           python3 -m pip install conan
       - name: Configure repos
         run: |
-          conan remote add packages https://conandev.jfrog.io/artifactory/api/conan/citutorial-packages
+          conan config install https://github.com/memsharded/conanci_conf.git
+          conan remote enable packages
           conan remote login packages "${{ secrets.USERPACKAGES }}" -p "${{ secrets.TOKENPACKAGES }}"
-          conan remote add products https://conandev.jfrog.io/artifactory/api/conan/citutorial-products
+          conan remote enable products
           conan remote login products "${{ secrets.USERPRODUCTS }}" -p "${{ secrets.TOKENPRODUCTS }}"
       - name: Download pkglists
         uses: actions/download-artifact@v4
